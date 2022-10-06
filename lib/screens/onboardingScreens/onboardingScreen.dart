@@ -76,10 +76,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     moveTo: "/registration",
                   ),
                   const Gap(20),
-                  Text(
-                    "Already have an account?",
-                    style: Fonts.onboardingLinks.bodyMedium,
-                    textAlign: TextAlign.center,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/login');
+                    },
+                    child: Text(
+                      "Already have an account?",
+                      style: Fonts.onboardingLinks.bodyMedium,
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ],
               ),
