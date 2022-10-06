@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:notely/screens/createNoteScreens/createNoteScreen.dart';
 import 'package:notely/screens/homepageScreens/homepageScreen.dart';
+import 'package:notely/screens/homepageScreens/noContentHomepage.dart';
 import 'package:notely/screens/registrationScreens/registrationScreen.dart';
 
 import 'screens/loginScreens/loginScreen.dart';
@@ -24,7 +26,9 @@ class MyApp extends StatelessWidget {
         '/': (context) => const OnboardingScreen(),
         '/registration': (context) => RegistrationScreen(),
         '/login': (context) => LoginScreen(),
+        '/initial-homepage': (context) => NoContentHomePage(),
         '/homepage': (context) => HomePageScreen(),
+        '/create-note': (context) => CreateNoteScreen(),
       },
     );
   }

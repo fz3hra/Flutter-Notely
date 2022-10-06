@@ -59,7 +59,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               ),
               const Gap(56),
               const OnboardingButton(
-                  title: "Create Account", moveTo: "/homepage"),
+                  title: "Create Account", moveTo: "/initial-homepage"),
               const Gap(20),
               GestureDetector(
                 onTap: () {

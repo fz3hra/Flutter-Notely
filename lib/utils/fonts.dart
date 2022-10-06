@@ -43,4 +43,13 @@ class Fonts {
       color: ColorsConstant.TextTitleColor,
     ),
   );
+
+  static const TextTheme editNoteTitle = TextTheme(
+    titleSmall: TextStyle(
+      fontFamily: "Nunito-Bold",
+      fontSize: 14,
+      fontWeight: FontWeight.w900,
+      color: ColorsConstant.TextTitleColor,
+    ),
+  );
 }
