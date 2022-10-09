@@ -71,10 +71,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     ),
                   ),
                   const Gap(56),
-                  const OnboardingButton(
-                    title: "GET STARTED",
-                    moveTo: "/registration",
-                  ),
+                  OnboardingButton(
+                      title: "GET STARTED",
+                      moveTo: "/registration",
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/registration');
+                      }),
                   const Gap(20),
                   GestureDetector(
                     onTap: () {

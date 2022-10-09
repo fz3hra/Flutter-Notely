@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:notely/blocs/registration_bloc/registration_bloc.dart';
 import 'package:notely/utils/colors.dart';
 import 'package:notely/utils/fonts.dart';
 import 'package:notely/widgets/onboarding/onboardingButton.dart';
@@ -13,6 +15,14 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  late RegistrationBloc register;
+
+  @override
+  void initState() {
+    register = BlocProvider.of<RegistrationBloc>(context);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -58,8 +68,37 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 textTitle: 'Password',
               ),
               const Gap(56),
-              const OnboardingButton(
-                  title: "Create Account", moveTo: "/initial-homepage"),
+              BlocListener<RegistrationBloc, RegistrationState>(
+                listener: (context, state) {
+                  // TODO: implement listener
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Container(
+                        child: Text("Your request was successfull!"),
+                      ),
+                      behavior: SnackBarBehavior.floating,
+                      action: SnackBarAction(
+                          textColor: Colors.white,
+                          label: 'Close',
+                          onPressed: () {
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          }),
+                    ),
+                  );
+                },
+                child: OnboardingButton(
+                    title: "Create Account",
+                    moveTo: "/initial-homepage",
+                    onPressed: () async {
+                      register.add(
+                        RegisteringEvent(
+                          name: "test1",
+                          email: "test1@gmail.com",
+                          password: "test123",
+                        ),
+                      );
+                    }),
+              ),
               const Gap(20),
               GestureDetector(
                 onTap: () {

@@ -4,11 +4,10 @@ import 'package:notely/utils/fonts.dart';
 
 class OnboardingButton extends StatelessWidget {
   final String title, moveTo;
-  const OnboardingButton({
-    Key? key,
-    required this.title,
-    required this.moveTo,
-  }) : super(key: key);
+  dynamic onPressed;
+  OnboardingButton(
+      {Key? key, required this.title, required this.moveTo, this.onPressed})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +17,16 @@ class OnboardingButton extends StatelessWidget {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           padding: const EdgeInsets.symmetric(
-            // horizontal: 72,
             vertical: 24,
           ),
           primary: ColorsConstant.secondaryColor,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         ),
-        onPressed: () {
-          Navigator.pushNamed(context, moveTo);
-        },
+        onPressed: onPressed,
+        // () {
+        //   // Navigator.pushNamed(context, moveTo);
+        // },
         child: Text(
           title,
           style: Fonts.onboardingTitle.bodyLarge,

@@ -48,8 +48,7 @@ class LoginScreen extends StatelessWidget {
                 textTitle: 'Password',
               ),
               const Gap(44),
-              const OnboardingButton(
-                  title: "Login", moveTo: "/initial-homepage"),
+              OnboardingButton(title: "Login", moveTo: "/initial-homepage"),
               const Gap(20),
               GestureDetector(
                 onTap: () {

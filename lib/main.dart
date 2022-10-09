@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:notely/blocs/registration_bloc/registration_bloc.dart';
+import 'package:notely/repository/userAuth_repository/registrationRepository.dart';
 import 'package:notely/screens/createNoteScreens/createNoteScreen.dart';
 import 'package:notely/screens/homepageScreens/homepageScreen.dart';
 import 'package:notely/screens/homepageScreens/noContentHomepage.dart';
@@ -8,7 +11,16 @@ import 'screens/loginScreens/loginScreen.dart';
 import 'screens/onboardingScreens/onboardingScreen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiBlocProvider(
+    providers: [
+      BlocProvider<RegistrationBloc>(
+        create: (BuildContext context) => RegistrationBloc(
+          RegistrationRepository(),
+        ),
+      )
+    ],
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
