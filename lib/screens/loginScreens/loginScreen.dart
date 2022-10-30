@@ -5,8 +5,24 @@ import 'package:notely/utils/fonts.dart';
 import 'package:notely/widgets/onboarding/onboardingButton.dart';
 import 'package:notely/widgets/registration/registrationTextField.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  late TextEditingController fullNameController,
+      emailController,
+      passwordController;
+
+  @override
+  void initState() {
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,11 +57,19 @@ class LoginScreen extends StatelessWidget {
               RegistrationTextField(
                 hintText: 'JohnDoe@gmail.com',
                 textTitle: 'Email Address',
+                controller: emailController,
+                errorText: '',
+                obscureText: false,
+                onChanged: (text) {},
               ),
               const Gap(21),
               RegistrationTextField(
                 hintText: '######',
                 textTitle: 'Password',
+                controller: passwordController,
+                errorText: '',
+                obscureText: true,
+                onChanged: (text) {},
               ),
               const Gap(44),
               OnboardingButton(title: "Login", moveTo: "/initial-homepage"),
