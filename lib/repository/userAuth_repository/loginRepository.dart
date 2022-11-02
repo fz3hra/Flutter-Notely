@@ -1,22 +1,24 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:notely/models/userModels/userModel.dart';
+import 'package:notely/models/userModels/userLoginModel.dart';
 import 'package:notely/utils/apiConstants/apiConstant.dart';
 
-class RegistrationRepository {
-  Future<UserModel?> createUsers(
-    String name,
+// TODO: when user logs in, store user_id, and token in shared preferences
+// Understand: JWT is used to store a user session
+
+class LoginRepository {
+  Future<UserLoginModel?> loginUsers(
     String email,
     String password,
   ) async {
     try {
-      var url = Uri.parse(
-          ApiConstant.registrationbaseUrl + ApiConstant.registrationEndPoint);
-      UserModel usermodel = UserModel(
+      var url = Uri.parse(ApiConstant.loginbaseUrl + ApiConstant.loginEndPoint);
+      UserLoginModel usermodel = UserLoginModel(
+        token: '',
         id: '',
         email: email,
-        name: name,
+        name: '',
         password: password,
         type: '',
       );
@@ -30,10 +32,11 @@ class RegistrationRepository {
       );
 
       if (res.statusCode == 200) {
-        print(UserModel.fromMap(jsonDecode(res.body)));
-        return UserModel.fromMap(jsonDecode(res.body));
+        // TODO : store res.body in secure storage
+        print("gettingRequest ${res.body}");
+        return UserLoginModel.fromMap(jsonDecode(res.body));
       } else {
-        print("Failed to create user");
+        print("Failed to login user");
       }
     } catch (e, s) {
       print("exception $e");

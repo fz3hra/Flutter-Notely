@@ -109,45 +109,37 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 obscureText: true,
               ),
               const Gap(56),
-              // BlocListener<RegistrationBloc, RegistrationState>(
-              //   listener: (context, state) {
-              // TODO: implement listener
-              // ScaffoldMessenger.of(context).showSnackBar(
-              //   SnackBar(
-              //     content: Container(
-              //       child: state is RegistrationError
-              //           ? Text("can not create user")
-              //           : Text("Your request was successfull!"),
-              //     ),
-              //     behavior: SnackBarBehavior.floating,
-              //     action: SnackBarAction(
-              //         textColor: Colors.white,
-              //         label: 'Close',
-              //         onPressed: () {
-              //           ScaffoldMessenger.of(context).hideCurrentSnackBar();
-              //         }),
-              //   ),
-              // );
-              // },
-              BlocBuilder<RegistrationBloc, RegistrationState>(
-                builder: (context, state) {
-                  if (state is RegistrationError) {
-                    print("cannot create user");
+              BlocListener<RegistrationBloc, RegistrationState>(
+                listener: (context, state) {
+                  if (state is RegistrationSuccess) {
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, '/initial-homepage', (route) => false);
+                  } else {
+                    print("UNABLE");
                   }
-                  return OnboardingButton(
-                      title: "Create Account",
-                      moveTo: "/initial-homepage",
-                      onPressed: () async {
-                        register.add(
-                          RegisteringEvent(
-                            name: RegistrationConstants.fullNameController.text,
-                            email: RegistrationConstants.emailController.text,
-                            password:
-                                RegistrationConstants.passwordController.text,
-                          ),
-                        );
-                      });
                 },
+                child: BlocBuilder<RegistrationBloc, RegistrationState>(
+                  builder: (context, state) {
+                    if (state is RegistrationError) {
+                      // TODO: SHOW snackbar
+                      print("cannot create user");
+                    }
+                    return OnboardingButton(
+                        title: "Create Account",
+                        // moveTo: "/initial-homepage",
+                        onPressed: () async {
+                          register.add(
+                            RegisteringEvent(
+                              name:
+                                  RegistrationConstants.fullNameController.text,
+                              email: RegistrationConstants.emailController.text,
+                              password:
+                                  RegistrationConstants.passwordController.text,
+                            ),
+                          );
+                        });
+                  },
+                ),
               ),
               // ),
               const Gap(20),

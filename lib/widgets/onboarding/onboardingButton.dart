@@ -3,10 +3,9 @@ import 'package:notely/utils/colors.dart';
 import 'package:notely/utils/fonts.dart';
 
 class OnboardingButton extends StatelessWidget {
-  final String title, moveTo;
+  final String title;
   dynamic onPressed;
-  OnboardingButton(
-      {Key? key, required this.title, required this.moveTo, this.onPressed})
+  OnboardingButton({Key? key, required this.title, this.onPressed})
       : super(key: key);
 
   @override

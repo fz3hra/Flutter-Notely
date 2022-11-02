@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:gap/gap.dart';
+import 'package:notely/blocs/login_bloc/login_bloc.dart';
 import 'package:notely/utils/colors.dart';
 import 'package:notely/utils/fonts.dart';
 import 'package:notely/widgets/onboarding/onboardingButton.dart';
@@ -16,9 +19,11 @@ class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController fullNameController,
       emailController,
       passwordController;
+  late LoginBloc loginBloc;
 
   @override
   void initState() {
+    loginBloc = BlocProvider.of<LoginBloc>(context);
     emailController = TextEditingController();
     passwordController = TextEditingController();
     super.initState();
@@ -72,7 +77,32 @@ class _LoginScreenState extends State<LoginScreen> {
                 onChanged: (text) {},
               ),
               const Gap(44),
-              OnboardingButton(title: "Login", moveTo: "/initial-homepage"),
+              BlocListener<LoginBloc, LoginState>(
+                listener: (context, state) {
+                  if (state is LoginSuccess) {
+                    Navigator.pushNamed(context, '/initial-homepage');
+                  } else {
+                    // TODO: add snackbar
+                    print("cannot navigate from login");
+                  }
+                },
+                child: BlocBuilder<LoginBloc, LoginState>(
+                  builder: (context, state) {
+                    return OnboardingButton(
+                      title: "Login",
+                      // moveTo: "/initial-homepage",
+                      onPressed: () async {
+                        loginBloc.add(
+                          LoginingEvent(
+                            email: emailController.text,
+                            password: passwordController.text,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
               const Gap(20),
               GestureDetector(
                 onTap: () {
