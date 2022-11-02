@@ -4,10 +4,18 @@ import 'package:notely/utils/fonts.dart';
 
 class RegistrationTextField extends StatelessWidget {
   final String textTitle, hintText;
-  const RegistrationTextField({
+  final TextEditingController controller;
+  final String? errorText;
+  final Function(String?) onChanged;
+  final bool obscureText;
+  RegistrationTextField({
     Key? key,
     required this.textTitle,
     required this.hintText,
+    required this.controller,
+    required this.errorText,
+    required this.onChanged,
+    required this.obscureText,
   }) : super(key: key);
 
   @override
@@ -18,7 +26,10 @@ class RegistrationTextField extends StatelessWidget {
         Text(textTitle, style: Fonts.hintTheme.titleMedium),
         const Gap(8),
         TextField(
+          controller: controller,
+          obscureText: obscureText,
           decoration: InputDecoration(
+            errorText: errorText,
             hintText: hintText,
             hintStyle: Fonts.hintTheme.bodyMedium,
             enabledBorder: OutlineInputBorder(
@@ -32,6 +43,7 @@ class RegistrationTextField extends StatelessWidget {
             filled: true,
             fillColor: Colors.white,
           ),
+          onChanged: onChanged,
         ),
       ],
     );

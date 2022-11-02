@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:notely/blocs/registration_bloc/registration_bloc.dart';
+import 'package:notely/controllers/registrationController/registrationController.dart';
 import 'package:notely/utils/colors.dart';
 import 'package:notely/utils/fonts.dart';
+import 'package:notely/utils/registrationConstants/registrationConstants.dart';
 import 'package:notely/widgets/onboarding/onboardingButton.dart';
 import 'package:notely/widgets/registration/registrationTextField.dart';
 
@@ -16,11 +18,26 @@ class RegistrationScreen extends StatefulWidget {
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
   late RegistrationBloc register;
+  RegistrationController registrationController = RegistrationController();
+  String? setFullNameText = "";
+  String? setEmailText = "";
+  // String? setPasswordText = "";
 
   @override
   void initState() {
     register = BlocProvider.of<RegistrationBloc>(context);
+    RegistrationConstants.fullNameController = TextEditingController();
+    RegistrationConstants.emailController = TextEditingController();
+    RegistrationConstants.passwordController = TextEditingController();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    RegistrationConstants.fullNameController.dispose();
+    RegistrationConstants.emailController.dispose();
+    RegistrationConstants.passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -56,49 +73,75 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               RegistrationTextField(
                 hintText: 'John Doe',
                 textTitle: 'Full Name',
+                controller: RegistrationConstants.fullNameController,
+                errorText: registrationController.errorTextFullName,
+                onChanged: (text) {
+                  setState(() {
+                    setFullNameText = text;
+                  });
+                },
+                obscureText: false,
               ),
               const Gap(21),
               RegistrationTextField(
                 hintText: 'JohnDoe@gmail.com',
                 textTitle: 'Email Address',
+                controller: RegistrationConstants.emailController,
+                errorText: registrationController.errorTextEmailAddress,
+                onChanged: (text) {
+                  setState(() {
+                    setEmailText = text;
+                  });
+                },
+                obscureText: false,
               ),
               const Gap(21),
               RegistrationTextField(
                 hintText: '######',
                 textTitle: 'Password',
+                controller: RegistrationConstants.passwordController,
+                errorText: "",
+                onChanged: (text) {
+                  // setState(() {
+                  //   setPasswordText = text;
+                  // });
+                },
+                obscureText: true,
               ),
               const Gap(56),
               BlocListener<RegistrationBloc, RegistrationState>(
                 listener: (context, state) {
-                  // TODO: implement listener
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Container(
-                        child: Text("Your request was successfull!"),
-                      ),
-                      behavior: SnackBarBehavior.floating,
-                      action: SnackBarAction(
-                          textColor: Colors.white,
-                          label: 'Close',
-                          onPressed: () {
-                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                          }),
-                    ),
-                  );
+                  if (state is RegistrationSuccess) {
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, '/initial-homepage', (route) => false);
+                  } else {
+                    print("UNABLE");
+                  }
                 },
-                child: OnboardingButton(
-                    title: "Create Account",
-                    moveTo: "/initial-homepage",
-                    onPressed: () async {
-                      register.add(
-                        RegisteringEvent(
-                          name: "test1",
-                          email: "test1@gmail.com",
-                          password: "test123",
-                        ),
-                      );
-                    }),
+                child: BlocBuilder<RegistrationBloc, RegistrationState>(
+                  builder: (context, state) {
+                    if (state is RegistrationError) {
+                      // TODO: SHOW snackbar
+                      print("cannot create user");
+                    }
+                    return OnboardingButton(
+                        title: "Create Account",
+                        // moveTo: "/initial-homepage",
+                        onPressed: () async {
+                          register.add(
+                            RegisteringEvent(
+                              name:
+                                  RegistrationConstants.fullNameController.text,
+                              email: RegistrationConstants.emailController.text,
+                              password:
+                                  RegistrationConstants.passwordController.text,
+                            ),
+                          );
+                        });
+                  },
+                ),
               ),
+              // ),
               const Gap(20),
               GestureDetector(
                 onTap: () {

@@ -35,6 +35,8 @@ dependencies:
   gap: ^2.0.0
   google_fonts: ^3.0.1
   http: ^0.13.5
+  flutter_secure_storage: ^6.0.0
+  jwt_decode: ^0.3.1
 
 dev_dependencies:
   # The "flutter_lints" package below contains a set of recommended lints to

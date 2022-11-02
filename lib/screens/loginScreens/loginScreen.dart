@@ -1,12 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:gap/gap.dart';
+import 'package:notely/blocs/login_bloc/login_bloc.dart';
 import 'package:notely/utils/colors.dart';
 import 'package:notely/utils/fonts.dart';
 import 'package:notely/widgets/onboarding/onboardingButton.dart';
 import 'package:notely/widgets/registration/registrationTextField.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  late TextEditingController fullNameController,
+      emailController,
+      passwordController;
+  late LoginBloc loginBloc;
+
+  @override
+  void initState() {
+    loginBloc = BlocProvider.of<LoginBloc>(context);
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,14 +62,47 @@ class LoginScreen extends StatelessWidget {
               RegistrationTextField(
                 hintText: 'JohnDoe@gmail.com',
                 textTitle: 'Email Address',
+                controller: emailController,
+                errorText: '',
+                obscureText: false,
+                onChanged: (text) {},
               ),
               const Gap(21),
               RegistrationTextField(
                 hintText: '######',
                 textTitle: 'Password',
+                controller: passwordController,
+                errorText: '',
+                obscureText: true,
+                onChanged: (text) {},
               ),
               const Gap(44),
-              OnboardingButton(title: "Login", moveTo: "/initial-homepage"),
+              BlocListener<LoginBloc, LoginState>(
+                listener: (context, state) {
+                  if (state is LoginSuccess) {
+                    Navigator.pushNamed(context, '/initial-homepage');
+                  } else {
+                    // TODO: add snackbar
+                    print("cannot navigate from login");
+                  }
+                },
+                child: BlocBuilder<LoginBloc, LoginState>(
+                  builder: (context, state) {
+                    return OnboardingButton(
+                      title: "Login",
+                      // moveTo: "/initial-homepage",
+                      onPressed: () async {
+                        loginBloc.add(
+                          LoginingEvent(
+                            email: emailController.text,
+                            password: passwordController.text,
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
               const Gap(20),
               GestureDetector(
                 onTap: () {

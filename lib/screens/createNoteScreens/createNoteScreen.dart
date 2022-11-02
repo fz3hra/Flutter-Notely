@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:notely/blocs/todo_bloc/create_todo_bloc/create_todo_bloc.dart';
 import 'package:notely/utils/colors.dart';
-import 'package:notely/utils/fonts.dart';
 import 'package:notely/widgets/common/appbarsCommon.dart';
 import 'package:notely/widgets/editNote/editNoteTextField.dart';
-import 'package:notely/widgets/registration/registrationTextField.dart';
 
 class CreateNoteScreen extends StatefulWidget {
   const CreateNoteScreen({super.key});
@@ -14,6 +14,24 @@ class CreateNoteScreen extends StatefulWidget {
 }
 
 class _CreateNoteScreenState extends State<CreateNoteScreen> {
+  late TextEditingController noteTitle, noteContent;
+  late CreateTodoBloc createTodoBloc;
+
+  @override
+  void initState() {
+    createTodoBloc = BlocProvider.of<CreateTodoBloc>(context);
+    noteTitle = TextEditingController();
+    noteContent = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    noteTitle.dispose();
+    noteContent.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -42,11 +60,13 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
           children: [
             const Gap(30),
             EditNoteTextField(
+              controller: noteTitle,
               hintText: "Note title",
             ),
             const Gap(12),
             Expanded(
               child: EditNoteTextField(
+                controller: noteContent,
                 hintText: "Note Content",
                 height: MediaQuery.of(context).size.height,
                 keyboardType: TextInputType.multiline,
