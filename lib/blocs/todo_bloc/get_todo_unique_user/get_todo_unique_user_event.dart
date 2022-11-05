@@ -11,3 +11,8 @@ class getTodoUniqueUserLoad extends GetTodoUniqueUserEvent {
   @override
   List<Object> get props => [];
 }
+
+class ItemsEventRefresh extends GetTodoUniqueUserEvent {
+  @override
+  List<Object> get props => [];
+}

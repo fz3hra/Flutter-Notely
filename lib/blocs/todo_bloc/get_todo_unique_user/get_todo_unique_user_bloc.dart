@@ -11,14 +11,30 @@ class GetTodoUniqueUserBloc
   final GetTodoUniqueUser getTodoUniqueUsers;
   GetTodoUniqueUserBloc(this.getTodoUniqueUsers)
       : super(GetTodoUniqueUserLoading()) {
-    on<GetTodoUniqueUserEvent>((event, emit) async {
-      emit(GetTodoUniqueUserLoading());
-      try {
-        final todoUniqueUserss = await getTodoUniqueUsers.getTodoUniqueUsers();
-        emit(GetTodoUniqueUserLoaded(todoUniqueUserss));
-      } catch (e) {
-        emit(GetTodoUniqueUserError(e.toString()));
-      }
-    });
+    on<GetTodoUniqueUserEvent>(
+      (event, emit) async {
+        emit(GetTodoUniqueUserLoading());
+        try {
+          final todoUniqueUserss =
+              await getTodoUniqueUsers.getTodoUniqueUsers();
+          emit(GetTodoUniqueUserLoaded(todoUniqueUserss));
+        } catch (e) {
+          emit(GetTodoUniqueUserError(e.toString()));
+        }
+      },
+    );
+    on<ItemsEventRefresh>(
+      (event, emit) async {
+        emit(ItemsStateRefreshing());
+        try {
+          final todoUniqueUserss =
+              await getTodoUniqueUsers.getTodoUniqueUsers();
+          await Future<void>.delayed(Duration(seconds: 3));
+          emit(GetTodoUniqueUserLoaded(todoUniqueUserss));
+        } catch (e) {
+          emit(GetTodoUniqueUserError(e.toString()));
+        }
+      },
+    );
   }
 }

@@ -15,6 +15,8 @@ class GetTodoUniqueUserLoaded extends GetTodoUniqueUserState {
   List<Object> get props => [getTodoUniqueUsers];
 }
 
+class ItemsStateRefreshing extends GetTodoUniqueUserState {}
+
 class GetTodoUniqueUserError extends GetTodoUniqueUserState {
   final String error;
   GetTodoUniqueUserError(this.error);
