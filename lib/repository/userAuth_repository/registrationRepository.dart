@@ -11,8 +11,8 @@ class RegistrationRepository {
     String password,
   ) async {
     try {
-      var url = Uri.parse(
-          ApiConstant.registrationbaseUrl + ApiConstant.registrationEndPoint);
+      var url =
+          Uri.parse(ApiConstant.baseUrl + ApiConstant.registrationEndPoint);
       UserModel usermodel = UserModel(
         id: '',
         email: email,
