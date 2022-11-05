@@ -13,7 +13,7 @@ class LoginRepository {
     String password,
   ) async {
     try {
-      var url = Uri.parse(ApiConstant.loginbaseUrl + ApiConstant.loginEndPoint);
+      var url = Uri.parse(ApiConstant.baseUrl + ApiConstant.loginEndPoint);
       UserLoginModel usermodel = UserLoginModel(
         token: '',
         id: '',

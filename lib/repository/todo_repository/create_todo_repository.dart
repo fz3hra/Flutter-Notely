@@ -10,8 +10,7 @@ class CreateTodoRepository {
     String description,
   ) async {
     try {
-      var url = Uri.parse(
-          ApiConstant.createTodobaseUrl + ApiConstant.createTodoEndPoint);
+      var url = Uri.parse(ApiConstant.baseUrl + ApiConstant.createTodoEndPoint);
       CreateTodoModel todoModel = CreateTodoModel(
         title: title,
         description: description,
