@@ -30,7 +30,6 @@ class RegistrationRepository {
       );
 
       if (res.statusCode == 200) {
-        print(UserModel.fromMap(jsonDecode(res.body)));
         return UserModel.fromMap(jsonDecode(res.body));
       } else {
         print("Failed to create user");

@@ -21,7 +21,6 @@ class _LoginScreenState extends State<LoginScreen> {
       emailController,
       passwordController;
   late LoginBloc loginBloc;
-  RegistrationController registrationController = RegistrationController();
 
   @override
   void initState() {
@@ -67,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   hintText: 'JohnDoe@gmail.com',
                   textTitle: 'Email Address',
                   controller: emailController,
-                  errorText: registrationController.errorTextEmailAddress,
+                  errorText: "",
                   obscureText: false,
                   onChanged: (text) {},
                 ),

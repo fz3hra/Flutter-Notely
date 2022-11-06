@@ -11,6 +11,11 @@ class SecuredStorageConstants {
     return readData;
   }
 
+  static Future<String?> readUserId(String key) async {
+    readData = await storage.read(key: key);
+    return readData;
+  }
+
   static int getPayload(dynamic readData) {
     payload = Jwt.parseJwt(readData);
     var id = payload!["id"];
