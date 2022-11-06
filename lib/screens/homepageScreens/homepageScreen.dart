@@ -3,8 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:gap/gap.dart';
 import 'package:notely/blocs/todo_bloc/get_todo_unique_user/get_todo_unique_user_bloc.dart';
-import 'package:notely/models/todoModels/get_todo_unique_user_models.dart';
-import 'package:notely/repository/todo_repository/get_todo_unique_user_repository.dart';
 import 'package:notely/utils/colors.dart';
 import 'package:notely/widgets/common/appbarsCommon.dart';
 
@@ -18,7 +16,7 @@ class HomePageScreen extends StatefulWidget {
 class _HomePageScreenState extends State<HomePageScreen> {
   late GetTodoUniqueUserBloc getTodoUniqueUserbloc;
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      new GlobalKey<RefreshIndicatorState>();
+      GlobalKey<RefreshIndicatorState>();
   @override
   void initState() {
     getTodoUniqueUserbloc = BlocProvider.of<GetTodoUniqueUserBloc>(context);
@@ -30,20 +28,27 @@ class _HomePageScreenState extends State<HomePageScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: ColorsConstant.secondaryColor,
+          child: const Icon(Icons.add),
+          onPressed: () {
+            Navigator.pushNamed(context, '/create-note');
+          },
+        ),
         backgroundColor: ColorsConstant.backgroundColor,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(64.0),
+          preferredSize: const Size.fromHeight(64.0),
           child: AppBarCommon(
             // TODO change to drawer
             leadingIcon: IconButton(
-              icon: Icon(
+              icon: const Icon(
                 Icons.menu,
                 color: Colors.black,
               ),
               onPressed: () => Scaffold.of(context).openDrawer(),
             ),
             title: "Recent Notes",
-            actionIcon: Icon(
+            actionIcon: const Icon(
               Icons.search,
               color: Colors.black,
             ),

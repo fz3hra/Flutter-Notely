@@ -12,24 +12,24 @@ String createTodoModelToMap(CreateTodoModel data) => json.encode(data.toMap());
 
 class CreateTodoModel {
   CreateTodoModel({
+    required this.userId,
     required this.title,
     required this.description,
-    required this.id,
   });
 
+  final String userId;
   final String title;
   final String description;
-  final String id;
 
   factory CreateTodoModel.fromMap(Map<String, dynamic> json) => CreateTodoModel(
+        userId: json["user_id"],
         title: json["title"],
         description: json["description"],
-        id: json["_id"],
       );
 
   Map<String, dynamic> toMap() => {
+        "user_id": userId,
         "title": title,
         "description": description,
-        "_id": id,
       };
 }

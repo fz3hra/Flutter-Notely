@@ -3,6 +3,7 @@ part of 'create_todo_bloc.dart';
 abstract class CreateTodoEvent extends Equatable {
   const CreateTodoEvent();
 
+  get noteUserId => '';
   get noteTitle => '';
   get noteContent => '';
 
@@ -11,13 +12,14 @@ abstract class CreateTodoEvent extends Equatable {
 }
 
 class CreatingTodoEvent extends CreateTodoEvent {
-  final String noteTitle, noteContent;
+  final String noteUserId, noteTitle, noteContent;
 
   const CreatingTodoEvent({
+    required this.noteUserId,
     required this.noteTitle,
     required this.noteContent,
   });
 
   @override
-  List<Object> get props => [noteTitle, noteContent];
+  List<Object> get props => [noteUserId, noteTitle, noteContent];
 }
