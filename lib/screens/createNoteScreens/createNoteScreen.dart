@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:gap/gap.dart';
+import 'package:jwt_decode/jwt_decode.dart';
 import 'package:notely/blocs/todo_bloc/create_todo_bloc/create_todo_bloc.dart';
 import 'package:notely/utils/colors.dart';
+import 'package:notely/utils/fonts.dart';
+import 'package:notely/utils/secured_storage_constants/secured_storage_constants.dart';
 import 'package:notely/widgets/common/appbarsCommon.dart';
 import 'package:notely/widgets/editNote/editNoteTextField.dart';
 
@@ -16,13 +20,27 @@ class CreateNoteScreen extends StatefulWidget {
 class _CreateNoteScreenState extends State<CreateNoteScreen> {
   late TextEditingController noteTitle, noteContent;
   late CreateTodoBloc createTodoBloc;
-
+  final _storage = const FlutterSecureStorage();
+  var test;
+  String? userId;
   @override
   void initState() {
     createTodoBloc = BlocProvider.of<CreateTodoBloc>(context);
     noteTitle = TextEditingController();
     noteContent = TextEditingController();
     super.initState();
+    getPayload();
+  }
+
+  void getPayload() async {
+    String? token = await _storage.read(key: "KEY_TOKEN");
+    test = token;
+    if (test != null) {
+      dynamic id = (Jwt.parseJwt(test!))["id"];
+      setState(() {
+        userId = id;
+      });
+    }
   }
 
   @override
@@ -49,7 +67,7 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
                 color: Colors.black,
               ),
             ),
-            title: "Edit Note",
+            title: "Add Note",
             actionIcon: const Icon(
               Icons.more_vert,
               color: Colors.black,
@@ -62,6 +80,8 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
             EditNoteTextField(
               controller: noteTitle,
               hintText: "Note title",
+              fontStyle: Fonts.onboardingTitle.bodyLarge,
+              hintStyle: Fonts.onboardingTitle.bodyLarge,
             ),
             const Gap(12),
             Expanded(
@@ -70,9 +90,44 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
                 hintText: "Note Content",
                 height: MediaQuery.of(context).size.height,
                 keyboardType: TextInputType.multiline,
+                fontStyle: const TextStyle(
+                  fontFamily: "Nunito-Bold",
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w700,
+                ),
+                hintStyle: const TextStyle(
+                  fontFamily: "Nunito-Bold",
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
           ],
+        ),
+        floatingActionButton: BlocListener<CreateTodoBloc, CreateTodoState>(
+          listener: (context, state) {
+            if (state is CreateTodoSuccess) {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, '/homepage', (route) => false);
+            } else {
+              print("UNABLE");
+            }
+          },
+          child: BlocBuilder<CreateTodoBloc, CreateTodoState>(
+            builder: (context, state) {
+              return FloatingActionButton(
+                backgroundColor: ColorsConstant.secondaryColor,
+                child: const Icon(Icons.save),
+                onPressed: () async {
+                  createTodoBloc.add(CreatingTodoEvent(
+                    noteUserId: userId!,
+                    noteTitle: noteTitle.text,
+                    noteContent: noteContent.text,
+                  ));
+                },
+              );
+            },
+          ),
         ),
       ),
     );

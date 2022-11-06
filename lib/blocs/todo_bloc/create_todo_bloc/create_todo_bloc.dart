@@ -12,10 +12,11 @@ class CreateTodoBloc extends Bloc<CreateTodoEvent, CreateTodoState> {
     on<CreateTodoEvent>((event, emit) async {
       emit(CreateTodoLoading());
       try {
+        String noteUserId = event.noteUserId;
         String noteTitle = event.noteTitle;
         String noteContent = event.noteContent;
-        final createTodos =
-            await _createTodoRepository.createTodos(noteTitle, noteContent);
+        final createTodos = await _createTodoRepository.createTodos(
+            noteUserId, noteTitle, noteContent);
         emit(CreateTodoSuccess(createTodos!));
       } catch (e) {
         emit(CreateTodoError(error: e));

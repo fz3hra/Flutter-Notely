@@ -58,10 +58,10 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const OnboardingScreen(),
         '/registration': (context) => RegistrationScreen(),
-        '/login': (context) => LoginScreen(),
-        '/initial-homepage': (context) => NoContentHomePage(),
-        '/homepage': (context) => HomePageScreen(),
-        '/create-note': (context) => CreateNoteScreen(),
+        '/login': (context) => const LoginScreen(),
+        '/initial-homepage': (context) => const NoContentHomePage(),
+        '/homepage': (context) => const HomePageScreen(),
+        '/create-note': (context) => const CreateNoteScreen(),
       },
     );
   }
