@@ -20,7 +20,6 @@ class CreateTodoRepository {
         title: title,
         description: description,
       );
-
       http.Response res = await http.post(
         url,
         headers: <String, String>{
@@ -29,9 +28,7 @@ class CreateTodoRepository {
         },
         body: jsonEncode(todoModel.toMap()),
       );
-
       if (res.statusCode == 200) {
-        print(CreateTodoModel.fromMap(jsonDecode(res.body)));
         return CreateTodoModel.fromMap(jsonDecode(res.body));
       } else {
         print("Failed to create todos");

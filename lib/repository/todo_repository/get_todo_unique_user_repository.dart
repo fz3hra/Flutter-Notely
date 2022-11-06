@@ -9,19 +9,38 @@ import 'package:notely/utils/secured_storage_constants/secured_storage_constants
 class GetTodoUniqueUser {
   Future<List<GetToDoUniqueUserModel>> getTodoUniqueUsers() async {
     try {
+      // !LOGIN user
+      var payload;
+      final String? _baseUrl;
+      final String _baseUrlRegistered;
+      var response;
       var token = await SecuredStorageConstants.readSecureData("KEY_TOKEN");
-      var payload = parseJwt(token!);
-      final String _baseUrl = ApiConstant.baseUrl +
-          ApiConstant.getTodoUniqueUserEndPoint +
-          payload["id"];
-      final response = await http.get(
-        Uri.parse(_baseUrl),
-        headers: {
-          HttpHeaders.contentTypeHeader: "application/json",
-          HttpHeaders.authorizationHeader: "Bearer $token"
-        },
-      );
-
+      var userID = await SecuredStorageConstants.readSecureData("KEY_USERID");
+      if (token != null) {
+        payload = parseJwt(token);
+        _baseUrl = ApiConstant.baseUrl +
+            ApiConstant.getTodoUniqueUserEndPoint +
+            payload["id"];
+        response = await http.get(
+          Uri.parse(_baseUrl),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            HttpHeaders.authorizationHeader: "Bearer $token"
+          },
+        );
+      } else {
+        // ! Registered use
+        _baseUrlRegistered = ApiConstant.baseUrl +
+            ApiConstant.getTodoUniqueUserEndPoint +
+            userID!;
+        response = await http.get(
+          Uri.parse(_baseUrlRegistered),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            HttpHeaders.authorizationHeader: "Bearer $token"
+          },
+        );
+      }
       List<GetToDoUniqueUserModel> model = [];
       if (response.statusCode == 200) {
         var res = json.decode(response.body);

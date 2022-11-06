@@ -12,7 +12,8 @@ abstract class CreateTodoEvent extends Equatable {
 }
 
 class CreatingTodoEvent extends CreateTodoEvent {
-  final String noteUserId, noteTitle, noteContent;
+  final String noteUserId;
+  final String noteTitle, noteContent;
 
   const CreatingTodoEvent({
     required this.noteUserId,

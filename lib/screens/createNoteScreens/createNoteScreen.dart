@@ -30,6 +30,7 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
     noteContent = TextEditingController();
     super.initState();
     getPayload();
+    getUserId();
   }
 
   void getPayload() async {
@@ -39,6 +40,15 @@ class _CreateNoteScreenState extends State<CreateNoteScreen> {
       dynamic id = (Jwt.parseJwt(test!))["id"];
       setState(() {
         userId = id;
+      });
+    }
+  }
+
+  void getUserId() async {
+    String? user_id = await _storage.read(key: "KEY_USERID");
+    if (user_id != null) {
+      setState(() {
+        userId = user_id;
       });
     }
   }
